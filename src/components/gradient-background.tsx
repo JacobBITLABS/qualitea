@@ -1,16 +1,21 @@
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient, RadialGradient } from 'expo-linear-gradient';
 import type { ReactNode } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 
 import { Blooms, Gradients } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
 type Variant = 'light' | 'dark';
 
+// SVG noise pattern as a data URI — fine film-grain texture.
+const noiseSvg = `<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'>
+<filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/></filter>
+<rect width='100%' height='100%' filter='url(%23n)' opacity='0.5'/></svg>`;
+const noiseUri = `data:image/svg+xml;charset UTF-8,${encodeURIComponent(noiseSvg)}`;
+
 /**
- * The app's colorful backdrop: a diagonal multi-hue gradient with two soft
- * "bloom" gradients layered on top for a mesh-like, vibrant feel. Content
- * (frosted-glass panels) renders above it.
+ * The app's colorful backdrop: a diagonal multi-hue gradient with radial color
+ * blobs layered on top for an organic mesh feel, topped with a fine noise texture.
  */
 export function GradientBackground({
   children,
@@ -26,17 +31,28 @@ export function GradientBackground({
 
   return (
     <View style={styles.fill}>
+      {/* Base gradient */}
       <LinearGradient colors={colors} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={StyleSheet.absoluteFill} />
+
+      {/* Mesh blobs */}
       {blooms.map((b, i) => (
-        <LinearGradient
+        <RadialGradient
           key={i}
           colors={[b.color, 'transparent']}
-          start={{ x: b.at.x > 0.5 ? 1 : 0, y: b.at.y > 0.5 ? 1 : 0 }}
-          end={{ x: 0.5, y: 0.5 }}
-          style={[StyleSheet.absoluteFill, { opacity: 0.4 }]}
+          cx={b.at.x}
+          cy={b.at.y}
+          r={b.radius}
+          style={StyleSheet.absoluteFill}
         />
       ))}
-      <View style={StyleSheet.absoluteFill} />
+
+      {/* Noise texture overlay — fine film grain */}
+      <Image
+        source={{ uri: noiseUri }}
+        style={[StyleSheet.absoluteFill, { opacity: 0.3 }]}
+        resizeMode="repeat"
+      />
+
       {children}
     </View>
   );

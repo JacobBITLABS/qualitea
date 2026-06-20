@@ -169,24 +169,29 @@ export const BottomTabInset = Platform.select({ ios: 50, android: 80 }) ?? 0;
 export const MaxContentWidth = 800;
 
 /**
- * Vibrant multi-hue gradient meshes used as the app backdrop — the "color in the
- * background" that frosted-glass panels sit on top of. Light = vivid blue→violet→teal;
- * dark = deep jewel tones so glass tints and white text read well.
+ * Soft mesh gradient backdrop: overlapping radial blobs in lavender, periwinkle,
+ * coral, peach, and dusty rose — blended organically with a fine noise overlay.
  */
 export const Gradients = {
-  light: ['#4F7CFF', '#8B5CF6', '#22B8CF'],
-  dark: ['#15235C', '#3A1860', '#0B3A44'],
+  light: ['#9B8EC0', '#6B83C2', '#E8A87C'],
+  dark: ['#1A1525', '#0F1A2E', '#1E1210'],
 } as const;
 
-/** Soft accent blooms layered over the base gradient for a richer "mesh" feel. */
+/** Mesh blobs — each position acts like a radial gradient "color splash". */
 export const Blooms = {
   light: [
-    { color: '#B743C6', at: { x: 0.85, y: 0.12 }, radius: 0.55 },
-    { color: '#2B7FFF', at: { x: 0.1, y: 0.9 }, radius: 0.5 },
+    { color: '#B8A8D4', at: { x: 0.15, y: 0.18 }, radius: 0.45 }, // lavender / upper-left
+    { color: '#7791B8', at: { x: 0.35, y: 0.45 }, radius: 0.40 }, // periwinkle / middle-left
+    { color: '#C97B6B', at: { x: 0.25, y: 0.75 }, radius: 0.38 }, // coral / bottom-left
+    { color: '#F0B585', at: { x: 0.70, y: 0.72 }, radius: 0.42 }, // peach / bottom-center
+    { color: '#D9A094', at: { x: 0.80, y: 0.30 }, radius: 0.38 }, // dusty rose / middle-right
   ],
   dark: [
-    { color: '#7C3AED', at: { x: 0.85, y: 0.12 }, radius: 0.55 },
-    { color: '#0EA5E9', at: { x: 0.1, y: 0.9 }, radius: 0.5 },
+    { color: '#2D1B38', at: { x: 0.15, y: 0.18 }, radius: 0.45 },
+    { color: '#1A2A3E', at: { x: 0.35, y: 0.45 }, radius: 0.40 },
+    { color: '#3A1A18', at: { x: 0.25, y: 0.75 }, radius: 0.38 },
+    { color: '#4A2A18', at: { x: 0.70, y: 0.72 }, radius: 0.42 },
+    { color: '#3A2028', at: { x: 0.80, y: 0.30 }, radius: 0.38 },
   ],
 } as const;
 
